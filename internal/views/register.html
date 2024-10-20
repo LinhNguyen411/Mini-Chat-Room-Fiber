@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mini Go Chat</title>
+    <!-- Add Bootstrap CSS for styling -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h3>Welcome to mini Go chat!</h3>
+        <div class="row mt-4">
+            <div class="col-6">
+                <div>
+                    <h5>Enter to chat room:</h5>
+                    <form action="/" method="POST">
+                        <div>
+                            <label for="nick">Nickname:</label>
+                            <input class="form-control form-control-sm" placeholder="Enter a nickname" type="text" name="nick" id="nick" required>
+                        </div>
+                        <br>
+                        <div>
+                            <button class="btn btn-dark btn-sm mt-1" type="submit">Go to chat</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

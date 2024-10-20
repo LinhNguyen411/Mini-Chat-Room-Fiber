@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mini Chat Room</title>
+    <!-- Add Bootstrap CSS for styling -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Add jQuery for JavaScript functionality -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+</head>
+<body>
+    <div class="container mt-5">
+        <h3>Welcome to mini chat room!</h3>
+        <div class="row mt-5">
+            <div class="col-6">
+                <label for="destination">Destination</label>
+                <input id="destination" class="form-control form-control-sm" type="text" placeholder="Destination Id" aria-label=".form-control-sm example">
+                <label for="message_content">Message</label>
+                <input id="message_content" class="form-control form-control-sm" type="text" placeholder="Message..." aria-label=".form-control-sm example">
+                <button class="btn btn-dark btn-sm mt-2" id="sendTest">Send test message!</button>
+
+                <div class="border mt-4">
+                    <div id="messages"></div>
+                </div>
+            </div>
+            <div class="col-6">
+                <!-- Optional content for the right column -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        console.log("{{ .nick }}");
+        let registerUrl = "ws://localhost:3000/api/ws/register/{{ .nick }}";
+        let conn = new WebSocket(registerUrl);
+
+        $("#sendTest").click(() => {
+            let defaultTestMessage = {
+                "origin_id": null,
+                "destination_id": $("#destination").val(),
+                "content": $("#message_content").val(),
+                "broadcast": false,
+            };
+            $("#messages").append("<p style='color: blue;'>" + defaultTestMessage.content + " ----------> Sent (" + defaultTestMessage.destination_id + ")</p>");
+            conn.send(JSON.stringify(defaultTestMessage));
+        });
+
+        conn.onmessage = (msg) => {
+            let websocketData = JSON.parse(msg.data);
+            console.log(websocketData);
+
+            if (websocketData.broadcast) {
+                $("#messages").append("<p style='color: grey;'>" + websocketData.content + "</p>");
+            } else {
+                $("#messages").append("<p style='color: red;'>" + websocketData.content + " <--------- Received (" + websocketData.origin_id + ")</p>");
+            }
+        };
+    </script>
+</body>
+</html>
